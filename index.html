@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOTSRTP Resource Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16232E;
+    --paper:#F6F4EF;
+    --paper-dim:#EFEBE1;
+    --teal:#2D7D6E;
+    --teal-dim:#DCE9E5;
+    --coral:#E4634C;
+    --slate:#5B6B76;
+    --line:#D8D3C7;
+    --radius:4px;
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation:none !important; transition:none !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+  }
+
+  h1,h2,h3{
+    font-family:'Source Serif 4', serif;
+    font-weight:600;
+    margin:0 0 .4em 0;
+    color:var(--ink);
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    font-size:.72rem;
+    color:var(--teal);
+    font-weight:500;
+  }
+
+  a{color:var(--teal);}
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.site-nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(246,244,239,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:16px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .nav-mark{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size:1.02rem;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    white-space:nowrap;
+  }
+  .nav-mark .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--coral);
+    display:inline-block;
+    flex-shrink:0;
+  }
+  nav.links{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+  }
+  nav.links a{
+    color:var(--ink);
+    text-decoration:none;
+    font-size:.88rem;
+    font-weight:500;
+    padding-bottom:3px;
+    border-bottom:2px solid transparent;
+    transition:border-color .15s ease, color .15s ease;
+    white-space:nowrap;
+  }
+  nav.links a:hover, nav.links a.active{
+    color:var(--teal);
+    border-bottom-color:var(--teal);
+  }
+  .nav-toggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:88px 0 40px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 4.4vw, 3.2rem);
+    line-height:1.08;
+    max-width:16ch;
+  }
+  .hero p.lede{
+    max-width:56ch;
+    color:var(--slate);
+    font-size:1.08rem;
+    margin-top:18px;
+  }
+
+  /* ---------- PULSE DIVIDER (signature element) ---------- */
+  .pulse-divider{
+    width:100%;
+    height:64px;
+    margin:8px 0 0;
+    overflow:hidden;
+  }
+  .pulse-divider svg{
+    width:100%;
+    height:100%;
+    display:block;
+  }
+  .pulse-divider path{
+    fill:none;
+    stroke:var(--coral);
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:900;
+    stroke-dashoffset:900;
+    transition:stroke-dashoffset 1.4s ease;
+  }
+  .pulse-divider.in-view path{
+    stroke-dashoffset:0;
+  }
+  .pulse-divider .baseline{
+    stroke:var(--line);
+    stroke-width:1;
+    stroke-dasharray:none;
+    transition:none;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{
+    padding:56px 0 64px;
+  }
+  section .section-head{
+    margin-bottom:34px;
+  }
+  section .section-head h2{
+    font-size:clamp(1.5rem, 2.6vw, 2rem);
+  }
+  section .section-head p{
+    color:var(--slate);
+    max-width:62ch;
+    margin-top:8px;
+  }
+
+  .body-copy p{color:var(--slate); margin:0 0 1em; max-width:70ch;}
+
+  /* ---------- INTRO VIDEO CARD (featured) ---------- */
+  .intro-grid{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:40px;
+    align-items:start;
+  }
+
+  /* ---------- NUMBERED LIST (Program Expectations) ---------- */
+  ol.expect-list{
+    list-style:none;
+    counter-reset:expect;
+    padding:0;
+    margin:0;
+    max-width:70ch;
+  }
+  ol.expect-list li{
+    counter-increment:expect;
+    position:relative;
+    padding-left:38px;
+    color:var(--slate);
+    margin-bottom:22px;
+  }
+  ol.expect-list li::before{
+    content:counter(expect);
+    position:absolute;
+    left:0; top:0;
+    width:24px; height:24px;
+    border-radius:50%;
+    background:var(--teal-dim);
+    color:var(--teal);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.78rem;
+    font-weight:500;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* ---------- MANUALS / DECKS / QUIZ LIST ROWS ---------- */
+  .subhead{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink);
+    border-bottom:1px solid var(--line);
+    padding-bottom:8px;
+    margin:40px 0 20px;
+  }
+  .subhead:first-of-type{margin-top:0;}
+  .note-box{
+    background:var(--paper-dim);
+    border-left:3px solid var(--coral);
+    padding:12px 16px;
+    font-size:.85rem;
+    color:var(--slate);
+    border-radius:0 var(--radius) var(--radius) 0;
+    margin-bottom:24px;
+    max-width:70ch;
+  }
+
+  .row-list{
+    display:flex;
+    flex-direction:column;
+    border-top:1px solid var(--line);
+  }
+  .row-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:18px 4px;
+    border-bottom:1px solid var(--line);
+  }
+  .row-item .row-title{font-weight:600; font-size:.98rem; display:flex; align-items:center; gap:10px;}
+  .row-item .row-desc{font-size:.84rem; color:var(--slate); margin-top:4px; max-width:64ch;}
+  .row-icon{
+    width:18px;height:18px;
+    color:var(--coral);
+    flex-shrink:0;
+  }
+  .row-link{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.78rem;
+    text-decoration:none;
+    border:1.5px dashed var(--teal);
+    color:var(--teal);
+    padding:8px 14px;
+    border-radius:var(--radius);
+    white-space:nowrap;
+    flex-shrink:0;
+    transition:background .15s ease;
+  }
+  .row-link:hover{background:var(--teal-dim);}
+  .row-link.placeholder-link{
+    border-style:dashed;
+    border-color:var(--line);
+    color:var(--slate);
+  }
+
+  /* ---------- VIDEO CARDS (YouTube thumbnail links) ---------- */
+  .video-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+  }
+  .video-grid.cols-2{grid-template-columns:repeat(2, 1fr);}
+
+  .yt-card{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    background:#fff;
+    transition:box-shadow .15s ease, transform .15s ease;
+  }
+  .yt-card:hover{
+    box-shadow:0 6px 18px rgba(22,35,46,.08);
+    transform:translateY(-1px);
+  }
+  .yt-thumb{
+    position:relative;
+    aspect-ratio:16/9;
+    background-size:cover;
+    background-position:center;
+    background-color:var(--ink);
+  }
+  .play-badge{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:46px; height:46px;
+    border-radius:50%;
+    background:rgba(20,20,20,.72);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    padding-left:3px;
+  }
+  .yt-title{
+    padding:12px 14px 14px;
+    font-size:.9rem;
+    font-weight:600;
+    line-height:1.35;
+  }
+  .yt-meta{
+    padding:0 14px 14px;
+    margin-top:-8px;
+    font-size:.8rem;
+    color:var(--slate);
+  }
+
+  /* Featured (larger) yt card for hero/intro video */
+  .yt-card.featured .yt-title{
+    font-size:.95rem;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 0 48px;
+    margin-top:24px;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  footer p{
+    color:var(--slate);
+    font-size:.84rem;
+    margin:0;
+  }
+  footer .disclaimer{
+    color:var(--coral);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:860px){
+    .intro-grid{grid-template-columns:1fr;}
+    .video-grid, .video-grid.cols-2{grid-template-columns:1fr 1fr;}
+    nav.links{
+      display:none;
+      position:absolute;
+      top:100%; left:0; right:0;
+      background:var(--paper);
+      border-bottom:1px solid var(--line);
+      flex-direction:column;
+      gap:0;
+      padding:8px 28px 16px;
+    }
+    nav.links.open{display:flex;}
+    nav.links a{padding:10px 0; border-bottom:1px solid var(--line);}
+    .nav-toggle{
+      display:block;
+      background:none;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:7px 10px;
+      cursor:pointer;
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.75rem;
+    }
+  }
+  @media (max-width:600px){
+    .video-grid, .video-grid.cols-2{grid-template-columns:1fr;}
+    .row-item{flex-direction:column; align-items:flex-start;}
+  }
+
+  :focus-visible{
+    outline:2px solid var(--coral);
+    outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="nav-mark"><span class="dot"></span>MOTSRTP Resource Hub</div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
+    <nav class="links" id="navLinks">
+      <a href="#introduction">Introduction</a>
+      <a href="#expectations">Program Expectations</a>
+      <a href="#manuals">Data Manuals</a>
+      <a href="#transplant101">Transplant 101</a>
+      <a href="#decks">Slide Decks</a>
+      <a href="#interviews">Interviews</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <h1>Multi-Organ Transplant Student Research Training Program</h1>
+  <p class="lede">Welcome to the MOTSRTP student hub!</p>
+</div>
+
+<div class="wrap"><div class="pulse-divider" data-pulse><svg viewBox="0 0 1000 64" preserveAspectRatio="none">
+  <line class="baseline" x1="0" y1="32" x2="1000" y2="32"/>
+  <path d="M0,32 L400,32 L430,10 L455,54 L480,32 L520,32 L545,20 L565,44 L590,32 L1000,32"/>
+</svg></div></div>
+
+<!-- ===================== INTRODUCTION ===================== -->
+<section id="introduction">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Program Introduction</h2>
+    </div>
+
+    <div class="intro-grid">
+      <div class="body-copy">
+        <p>What began with two co-directors and six students in its inaugural 2009 cohort has since seen over 150 students who have gone on to have diverse and illustrious careers. Whether it's presenting at international conferences or hosting friendly soccer competitions, MOTSRTP trainees have done it all.</p>
+        <p>As you'll soon learn, being a trainee is a balancing act, between data collection and project management, competitions and event planning, and making sure to enjoy it along the way too!</p>
+        <p>Learn about our most recent cohort and trainees from summer 2026 by watching this video.</p>
+      </div>
+
+      <a class="yt-card featured" href="https://youtu.be/uDrypUyORdw" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/uDrypUyORdw/hqdefault.jpg')">
+          <div class="play-badge">▶</div>
+        </div>
+        <div class="yt-title">Meet the Summer 2026 MOTSRTP Trainees</div>
+        <div class="yt-meta">MOTSRTP Trainees · Watch on YouTube</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="pulse-divider" data-pulse><svg viewBox="0 0 1000 64" preserveAspectRatio="none">
+  <line class="baseline" x1="0" y1="32" x2="1000" y2="32"/>
+  <path d="M0,32 L250,32 L275,14 L300,50 L325,32 L500,32 L525,14 L550,50 L575,32 L1000,32"/>
+</svg></div></div>
+
+<!-- ===================== PROGRAM EXPECTATIONS ===================== -->
+<section id="expectations">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Program Expectations</h2>
+    </div>
+
+    <ol class="expect-list">
+      <li>Trainees are expected to be on site at least once a week! Many trainees commonly attend Transplant Rounds on Wednesdays and then stick around the office as Segun is often in office on Wednesday as well.</li>
+      <li>Teams are expected to meet at least once a week. This ensures smooth communication as well as timely completion of tasks.</li>
+      <li>Always communicate clearly with your team! If you aren't able to join a meeting or meet a deadline, make sure to let your team members know well ahead of time.</li>
+    </ol>
+  </div>
+</section>
+
+<div class="wrap"><div class="pulse-divider" data-pulse><svg viewBox="0 0 1000 64" preserveAspectRatio="none">
+  <line class="baseline" x1="0" y1="32" x2="1000" y2="32"/>
+  <path d="M0,32 L600,32 L620,18 L640,46 L660,26 L680,38 L700,32 L1000,32"/>
+</svg></div></div>
+
+<!-- ===================== DATA MANUALS ===================== -->
+<section id="manuals">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Data Manuals</h2>
+    </div>
+    <p style="color:var(--slate); max-width:70ch; margin-top:-14px; margin-bottom:8px;">Below are data manuals to help you with various collection tasks while ensuring we maintain consistency across collection. Note: To access these, you must sign in with a UHN email. These should never be shared outside of the program.</p>
+
+    <div class="row-list">
+      <div class="row-item">
+        <div>
+          <div class="row-title">Pre-Transplant Recipient Collection</div>
+          <div class="row-desc">Includes performance measures/timepoints (e.g., date of first nephrology visit, final disposition, surgical and anesthesia clearance), demographics (e.g., race), medical history, and psychosocial assessment</div>
+        </div>
+        <a class="row-link" href="https://universityhealthnetwork-my.sharepoint.com/:w:/g/personal/parmin_sedightonekaboni_uhn_ca1/IQAkxEu5BY2DS5SIxQ1ZFBC7ATL981FQVIwVCFnPmXYJkkE?e=95J79Y" target="_blank" rel="noopener">View manual →</a>
+      </div>
+      <div class="row-item">
+        <div>
+          <div class="row-title">Donor Data Collection</div>
+          <div class="row-desc">Primarily includes timepoints along the donor evaluation process including questionnaire receipt and review, testing dates, and consults</div>
+        </div>
+        <a class="row-link" href="https://universityhealthnetwork-my.sharepoint.com/:w:/g/personal/parmin_sedightonekaboni_uhn_ca1/IQCZekD6gIKrS7ywQOlZjO0YAYZuJC9STnGO1LxUSMTXpPU?e=tgFppe" target="_blank" rel="noopener">View manual →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="pulse-divider" data-pulse><svg viewBox="0 0 1000 64" preserveAspectRatio="none">
+  <line class="baseline" x1="0" y1="32" x2="1000" y2="32"/>
+  <path d="M0,32 L150,32 L170,16 L190,48 L210,32 L500,32 L520,16 L540,48 L560,32 L1000,32"/>
+</svg></div></div>
+
+<!-- ===================== TRANSPLANT 101 ===================== -->
+<section id="transplant101">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Transplant 101</h2>
+      <p>To watch all Transplant 101 videos, go to this <a href="https://youtube.com/playlist?list=PLBWWOPxH8wWqXIvMoJ3LlXz7otd2AT1n0&si=Vj-ulHfSnDqtYI_S" target="_blank" rel="noopener">playlist</a>.</p>
+    </div>
+
+    <p class="subhead" style="margin-top:0;">Watch — Transplant 101 Playlist</p>
+    <div class="video-grid">
+      <a class="yt-card" href="https://youtu.be/xMY0-VEijuU?si=4lunhFbp87prxv42" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/xMY0-VEijuU/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Kidney &amp; Pancreas Physiology and Transplant</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/70Bw8n8fdB8?si=6LPxf7yEz7dCUWQo" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/70Bw8n8fdB8/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Liver Physiology and Transplant</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/ZjBihlUwRG4?si=xqH6DUGQh_iN8Bez" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/ZjBihlUwRG4/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Kidney &amp; Liver Transplant Surgical Techniques</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/B6FMpzU7txM?si=iNa2uRHmfe__Ro5b" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/B6FMpzU7txM/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Lung Physiology and Transplant</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/Bgc22si8w4Y?si=3JL5vX6dIRQO1CJj" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/Bgc22si8w4Y/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Lung Transplant Surgical Techniques</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/pdeSxOIVUts?si=9N9_m8laICAeomng" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/pdeSxOIVUts/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Heart Physiology and Transplant</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/CUhjUonlGcU?si=0VBA14gaJAk1uV-r" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/CUhjUonlGcU/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Immunology in Transplantation</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/Ui0Q7YiHfEI?si=rnBHbuKue02a1Ek_" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/Ui0Q7YiHfEI/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Immunosuppressive Therapies in Transplantation</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/7nbT2Y3F744?si=xdkMgS0O3rLBZe5x" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/7nbT2Y3F744/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Infectious Disease</div>
+      </a>
+    </div>
+
+    <p class="subhead">Practice Quizzes</p>
+    <p style="color:var(--slate); max-width:70ch; margin-top:-8px;">If you'd like to test your knowledge, try these practice quizzes created by a past cohort of students. Don't worry, your response won't count for anything but you will get a score so you can see where you went wrong!</p>
+
+    <div class="row-list">
+      <div class="row-item">
+        <div class="row-title">Kidney/Liver/Pancreas Physiology</div>
+        <a class="row-link" href="https://docs.google.com/forms/d/e/1FAIpQLSdrjwp9smqEHro3ddrvqlpVfFzfrnqZo3INQ2AGFKFw8az2KA/viewform?usp=dialog" target="_blank" rel="noopener">Take quiz →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">Heart/Lung Physiology and Clinical Management</div>
+        <a class="row-link" href="https://docs.google.com/forms/d/e/1FAIpQLSdhBREQIhueW8D_ZOhgqMfbaEsBDFnK_jn6dG5rK22Ihie8uw/viewform?usp=dialog" target="_blank" rel="noopener">Take quiz →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">Immunology in Transplantation</div>
+        <a class="row-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfxThspSJhHmwhjJFjgh8EzQNOo_Pngg3VFtlKqiohATBt1ig/viewform?usp=dialog" target="_blank" rel="noopener">Take quiz →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">Immunosuppressive Therapies in Transplantation</div>
+        <a class="row-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfhp5KOtqjrwLUcK49reFzMwm3zovItt6KL40WjVHBuhzrrZQ/viewform?usp=dialog" target="_blank" rel="noopener">Take quiz →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">Infectious Diseases</div>
+        <a class="row-link" href="https://docs.google.com/forms/d/e/1FAIpQLSc-E4wrH6pSXNJ9N7TevURRkauaY68Cl2r_ECLeXH8uNJlftw/viewform?usp=dialog" target="_blank" rel="noopener">Take quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="pulse-divider" data-pulse><svg viewBox="0 0 1000 64" preserveAspectRatio="none">
+  <line class="baseline" x1="0" y1="32" x2="1000" y2="32"/>
+  <path d="M0,32 L600,32 L620,18 L640,46 L660,26 L680,38 L700,32 L1000,32"/>
+</svg></div></div>
+
+<!-- ===================== SLIDE DECKS ===================== -->
+<section id="decks">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Slide Decks</h2>
+      <p>Slides from past trainees to help you with a variety of skills</p>
+    </div>
+
+    <div class="row-list">
+      <div class="row-item">
+        <div class="row-title">
+          <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1.5"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          Project Management (Part 1)
+        </div>
+        <a class="row-link" href="https://drive.google.com/file/d/1-JlBq_uGVhJnrqjSBUxmL-v6x7ZsImbM/view?usp=sharing" target="_blank" rel="noopener">View deck →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">
+          <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1.5"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          Project Management (Part 2)
+        </div>
+        <a class="row-link" href="https://drive.google.com/file/d/17v-cH9pWkxZ_uCpaPXAYMu92Xy1ycDz8/view?usp=sharing" target="_blank" rel="noopener">View deck →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">
+          <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1.5"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          Project Management (Part 3)
+        </div>
+        <a class="row-link" href="https://drive.google.com/file/d/1rBzzSgZwtwzWlhj5VyNbD4kNeENdOsNu/view?usp=sharing" target="_blank" rel="noopener">View deck →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">
+          <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1.5"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          Research Methods
+        </div>
+        <a class="row-link" href="https://drive.google.com/file/d/1tCg5gsCIfHb_2_kS7ue4r2p4D_Ptalpd/view?usp=sharing" target="_blank" rel="noopener">View deck →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">
+          <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1.5"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          Scientific Writing
+        </div>
+        <a class="row-link" href="https://drive.google.com/file/d/13V7Aia825lQrsS9WtIETevFrdOQicSlt/view?usp=sharing" target="_blank" rel="noopener">View deck →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">
+          <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1.5"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          Presentation Skills
+        </div>
+        <a class="row-link" href="https://drive.google.com/file/d/1zCHAwX9dolBQykvKOgpjC-vl1VQ8clb4/view?usp=sharing" target="_blank" rel="noopener">View deck →</a>
+      </div>
+      <div class="row-item">
+        <div class="row-title">
+          <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1.5"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          Science Communication Across Audiences
+        </div>
+        <a class="row-link" href="https://drive.google.com/file/d/1brpUbOh47itI9DykbTcuj35cHimKhKey/view?usp=sharing" target="_blank" rel="noopener">View deck →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="pulse-divider" data-pulse><svg viewBox="0 0 1000 64" preserveAspectRatio="none">
+  <line class="baseline" x1="0" y1="32" x2="1000" y2="32"/>
+  <path d="M0,32 L150,32 L170,16 L190,48 L210,32 L500,32 L520,16 L540,48 L560,32 L1000,32"/>
+</svg></div></div>
+
+<!-- ===================== INTERVIEWS ===================== -->
+<section id="interviews">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Interviews with Ajmera Transplant Centre Staff</h2>
+      <p>Hear from ATC staff about their career journeys, research, and advice for trainees</p>
+    </div>
+
+    <div class="video-grid cols-2">
+      <a class="yt-card" href="https://youtu.be/hIJcEiGCAQc" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/hIJcEiGCAQc/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Dr. Michael Henneresse, Principal Investigator</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/Y2VJtKOrfzI" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/Y2VJtKOrfzI/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Gary Beauchamp, Physiotherapist</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/C6vQe1nPezo" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/C6vQe1nPezo/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Jed Gross, Bioethicist</div>
+      </a>
+      <a class="yt-card" href="https://youtu.be/8WEqlVf5x0E" target="_blank" rel="noopener">
+        <div class="yt-thumb" style="background-image:url('https://img.youtube.com/vi/8WEqlVf5x0E/hqdefault.jpg')"><div class="play-badge">▶</div></div>
+        <div class="yt-title">Dipika Munyal, Pharmacist</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Multi-Organ Transplant Student Research Training Program</p>
+    <p class="disclaimer">This hub is for internal use only and should not be shared publicly. It has not been approved for external use by UHN.</p>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navAnchors = document.querySelectorAll('nav.links a');
+  const setActive = () => {
+    let current = '';
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 120 && rect.bottom >= 120) current = sec.id;
+    });
+    navAnchors.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  };
+  document.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+
+  // Pulse divider draw-in on scroll into view
+  const pulses = document.querySelectorAll('.pulse-divider');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    pulses.forEach(p => p.classList.add('in-view'));
+  } else if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    pulses.forEach(p => io.observe(p));
+  } else {
+    pulses.forEach(p => p.classList.add('in-view'));
+  }
+</script>
+
+</body>
+</html>
